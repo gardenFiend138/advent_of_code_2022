@@ -39,6 +39,8 @@ import { input } from "./input.js";
 
 function findGreatestTotalCalories() {
   let currentGreatest = 0;
+  let currentSecondgreatest = 0;
+  let currentThirdGreatest = 0;
 
   const elfCalories = input.split("\n\n");
 
@@ -47,12 +49,34 @@ function findGreatestTotalCalories() {
     const elfTotal = elfCaloriesString
       .split("\n")
       .reduce((total, current) => total + +current, 0);
+
+    // this is cumbersome, has to be a better way to do this
     if (elfTotal > currentGreatest) {
+      if (currentGreatest === 0) {
+        currentGreatest = elfTotal;
+        continue;
+      }
+
+      const prevGreatest = currentGreatest;
       currentGreatest = elfTotal;
+      const prevSecond = currentSecondgreatest;
+      currentSecondgreatest = prevGreatest;
+      currentThirdGreatest = prevSecond;
+    } else if (elfTotal > currentSecondgreatest) {
+      if (currentSecondgreatest === 0) {
+        currentSecondgreatest = elfTotal;
+        continue;
+      }
+
+      const prevSecond = currentSecondgreatest;
+      currentSecondgreatest = elfTotal;
+      currentThirdGreatest = prevSecond;
+    } else if (elfTotal > currentThirdGreatest) {
+      currentThirdGreatest = elfTotal;
     }
   }
 
-  return currentGreatest;
+  return currentGreatest + currentSecondgreatest + currentThirdGreatest;
 }
 
 console.log(findGreatestTotalCalories());
