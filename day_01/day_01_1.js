@@ -38,17 +38,21 @@ initial thought: list of lists
 import { input } from "./input.js";
 
 function findGreatestTotalCalories() {
-  const allCalorieTotals = [];
+  let currentGreatest = 0;
 
-  input.split("\n\n").map(elfCalories => {
-    let total = 0;
-    elfCalories.split("\n").map(calories => {
-      total += Number(calories);
-    });
-    allCalorieTotals.push(total);
-  });
+  const elfCalories = input.split("\n\n");
 
-  return Math.max(...allCalorieTotals);
+  for (let i = 0; i < elfCalories.length; i++) {
+    const elfCaloriesString = elfCalories[i];
+    const elfTotal = elfCaloriesString
+      .split("\n")
+      .reduce((total, current) => total + +current, 0);
+    if (elfTotal > currentGreatest) {
+      currentGreatest = elfTotal;
+    }
+  }
+
+  return currentGreatest;
 }
 
 console.log(findGreatestTotalCalories());
